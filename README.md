@@ -9,3 +9,7 @@
 - ### Add FireBase
 
   - Database Setup
+
+- ### Add Utility Functions
+
+  - Common Helper Functions, User Schema & Current Environment Mode (Prod | Dev)
