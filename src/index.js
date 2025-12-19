@@ -1,11 +1,6 @@
-import { configDotenv } from "dotenv";
+import "dotenv/config";
+import "./db/firebaseAdmin.js";
 import express from "express";
-
-const { parsed } = configDotenv();
-
-if (!parsed) {
-  process.exit(1);
-}
 
 const PORT = process.env.PORT || 8000;
 
