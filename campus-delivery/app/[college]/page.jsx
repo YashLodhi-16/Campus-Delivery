@@ -27,6 +27,24 @@ export default function VenueSelection() {
             { id: 'reddy', name: 'REDDY', type: 'South Indian', img: '/places/reddy.jpeg' },
         ]
     }
+    else if (params.college === "nsut") {
+        venues = [
+            { id: 'main-canteen', name: 'MAIN CANTEEN', type: 'Canteen', img: '/places/nsut-canteen.jpeg' },
+            { id: 'food-hub', name: 'FOOD HUB', type: 'Food Court', img: '/places/nsut-foodhub.jpeg' },
+        ]
+    }
+    else if (params.college === "igdtuw") {
+        venues = [
+            { id: 'main-canteen', name: 'MAIN CANTEEN', type: 'Canteen', img: '/places/t-canteen.jpeg' },
+            { id: 'food-hub', name: 'FOOD HUB', type: 'Food Court', img: '/places/ns-foodhub.jpeg' },
+        ]
+    }
+    else {
+        venues = [
+            { id: 'main-canteen', name: 'MAIN CANTEEN', type: 'Canteen', img: '/places/iiit-canteen.jpeg' },
+            { id: 'food-hub', name: 'FOOD HUB', type: 'Food Court', img: '/places/iiit-foodhub.jpeg' },
+        ]
+    }
 
     const handleVenueSelect = (venueId) => {
         setIsExiting(true);
@@ -47,7 +65,7 @@ export default function VenueSelection() {
                 {/* College Image with Overlay */}
                 <div
                     className="absolute inset-0 opacity-60 bg-center transition-transform duration-[10s] hover:scale-110"
-                    style={{ backgroundImage: `url('/places/DTU-OAT.png')` }} 
+                    style={{ backgroundImage: `url('/places/DTU-OAT.png')` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 

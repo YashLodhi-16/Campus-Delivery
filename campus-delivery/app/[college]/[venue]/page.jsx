@@ -1,34 +1,43 @@
 "use client";
-
+import itemdata from '@/Public/items.json';
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ShoppingBag, Plus, Minus, Star } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 
-const MENU_DATA = {
-  categories: ["Popular", "Main Course", "Snacks", "Drinks"],
-  items: [
-    { id: 1, name: "Paneer Butter Masala", price: 180, category: "Main Course", rating: 4.8, img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=300" },
-    { id: 2, name: "Crispy Veg Burger", price: 99, category: "Popular", rating: 4.5, img: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=300" },
-    { id: 3, name: "Cold Coffee", price: 60, category: "Drinks", rating: 4.9, img: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=300" },
-    { id: 4, name: "French Fries", price: 80, category: "Snacks", rating: 4.2, img: "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=300" },
-    { id: 5, name: "Masala Dosa", price: 120, category: "Popular", rating: 4.7, img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=300" },
-  ]
-};
-
 export default function VenueMenu() {
   const params = useParams();
   const venue = params.venue?.toUpperCase();
   const router = useRouter();
-  const [activeCat, setActiveCat] = useState("Popular");
   const [cart, setCart] = useState({}); // { itemId: quantity }
 
-  // 1. PULL DATA LOGIC: Calculate detailed cart for the checkout page
+  const collegeParam = params.college; // 'dtu'
+  const venueParam = params.venue; // 'canteen'
+
+  // Fetch menu data based on college and venue from the imported JSON
+  const MENU_DATA = useMemo(() => { 
+    const collegeObj = itemdata.find(c => c.id === collegeParam); 
+    const venueObj = collegeObj?.venues.find(v => v.name.toLowerCase() === venueParam);
+
+    return { 
+      categories: venueObj?.categories || [],
+      items: venueObj?.items || []
+    };
+  }, [collegeParam, venueParam]);
+
+  const [activeCat, setActiveCat] = useState("");
+
+  useEffect(() => {
+    if (MENU_DATA.categories.length > 0 && !activeCat) {
+      setActiveCat(MENU_DATA.categories[0]);
+    }
+  }, [MENU_DATA, activeCat]);
+
   const { totalItems, totalPrice, cartDetails } = useMemo(() => {
     const details = Object.entries(cart).map(([id, qty]) => {
       const item = MENU_DATA.items.find(i => i.id === parseInt(id));
-      return { ...item, qty };
-    });
+      return item ? { ...item, qty } : null;
+    }).filter(Boolean); // Clean up any nulls
 
     const totals = details.reduce((acc, item) => ({
       totalItems: acc.totalItems + item.qty,
@@ -36,14 +45,14 @@ export default function VenueMenu() {
     }), { totalItems: 0, totalPrice: 0 });
 
     return { ...totals, cartDetails: details };
-  }, [cart]);
+  }, [cart, MENU_DATA]); 
 
   // 2. CHECKOUT HANDLER: Save to localStorage and redirect
   const handleCheckout = () => {
     if (totalItems > 0) {
       localStorage.setItem('campus_cart', JSON.stringify(cartDetails));
       localStorage.setItem('campus_total', totalPrice.toString());
-      router.push('/cart');
+      router.push(`/${collegeParam}/${venueParam}/cart`);
     }
   };
 
@@ -58,8 +67,8 @@ export default function VenueMenu() {
     });
   };
 
-  const filteredItems = MENU_DATA.items.filter(item => item.category === activeCat);
-
+  const filteredItems = MENU_DATA.items.filter(item => item.category === activeCat); 
+  
   return (
     <div className="min-h-screen bg-[#FFD54F] font-sans">
       {/* HEADER */}
