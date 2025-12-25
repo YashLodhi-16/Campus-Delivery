@@ -43,7 +43,7 @@ export default function CheckoutPage() {
             localStorage.removeItem('campus_cart'); // Clear cart after success
             router.push('/receipt');
         }, 2000);
-    };
+    }; 
 
     return (
         <div className="min-h-screen bg-[#FFD54F] font-sans">

@@ -65,7 +65,7 @@ export default function VenueSelection() {
                 {/* College Image with Overlay */}
                 <div
                     className="absolute inset-0 opacity-60 bg-center transition-transform duration-[10s] hover:scale-110"
-                    style={{ backgroundImage: `url('/places/DTU-OAT.png')` }}
+                    style={{ backgroundImage: `url('/places/DTU-OAT.png')` }} 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 

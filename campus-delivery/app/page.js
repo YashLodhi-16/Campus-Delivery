@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
 import HomeLoader from "./components/home-loader"
+import SignInButton from "./components/Signbtn"
 
 export default function Home() {
   const router = useRouter()
@@ -78,48 +79,16 @@ export default function Home() {
               We’ll verify you with OTP
             </p>
           </div>
-
-          {/* NUMBER */}
-          <div className="relative">
-            <input
-              type="tel"
-              maxLength={10}
-              required
-              placeholder="Phone Number"
-              className="peer w-full rounded-xl border border-gray-600 px-4 py-3 text-center text-lg focus:outline-none text-black focus:ring-2 focus:ring-yellow-400"
-            /> 
-          </div>
-
-          {/* OTP */}
-          <div className="relative">
-            <input
-              type="text"
-              maxLength={6}
-              required
-              placeholder="OTP"
-              className="peer w-full rounded-xl border border-gray-600 px-4 py-3 text-center text-lg text-black focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            /> 
-          </div>
-
-          {/* NOTE */}
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-3 rounded-md text-xs text-gray-700">
-            <b>NOTE:</b> This number will be used for delivery calls and cannot be
-            changed later.
-          </div>
-
-          {/* BUTTON */}
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className="w-full bg-red-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-red-700 transition"
-          >
-            CONTINUE
-          </motion.button>
+<div className="flex justify-center  py-4 ">
+         <SignInButton />
+</div>
         </form>
       </motion.div>
 
     </motion.div>
+
   </div>
+  
 )
 
 }

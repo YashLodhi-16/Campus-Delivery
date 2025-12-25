@@ -1,6 +1,7 @@
 "use client";
-import itemdata from '@/Public/items.json';
+
 import React, { useState, useMemo, useEffect } from 'react';
+import itemdata from '@/Public/items.json';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ShoppingBag, Plus, Minus, Star } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -47,12 +48,13 @@ export default function VenueMenu() {
     return { ...totals, cartDetails: details };
   }, [cart, MENU_DATA]); 
 
+
   // 2. CHECKOUT HANDLER: Save to localStorage and redirect
   const handleCheckout = () => {
     if (totalItems > 0) {
       localStorage.setItem('campus_cart', JSON.stringify(cartDetails));
       localStorage.setItem('campus_total', totalPrice.toString());
-      router.push(`/${collegeParam}/${venueParam}/cart`);
+      router.push('/details');
     }
   };
 
@@ -67,8 +69,8 @@ export default function VenueMenu() {
     });
   };
 
-  const filteredItems = MENU_DATA.items.filter(item => item.category === activeCat); 
-  
+  const filteredItems = MENU_DATA.items.filter(item => item.category === activeCat);
+
   return (
     <div className="min-h-screen bg-[#FFD54F] font-sans">
       {/* HEADER */}
