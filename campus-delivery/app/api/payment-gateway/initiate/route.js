@@ -15,8 +15,8 @@ export async function POST(req) {
       city = "Delhi",
       state = "Delhi",
       country = "India",
-      surl = "http://localhost:3000/receipt?orderId=" + orderId,
-      furl = "http://localhost:3000/payment-failed?orderId=" + orderId,
+      surl = "http://localhost:3000/api/payment-gateway/redirect",
+      furl = "http://localhost:3000/api/payment-gateway/redirect",
     } = await req.json();
 
     const form = payuClient.paymentInitiate({
