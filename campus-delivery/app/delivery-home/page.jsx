@@ -22,6 +22,7 @@ export default function DeliveryHome() {
   const router = useRouter();
   const [pendingOrders, setPendingOrders] = useState([]);
   const [acceptedOrders, setAcceptedOrders] = useState([]);
+  const [otps, setOtps] = useState({});
   const phone =
     typeof window !== "undefined"
       ? localStorage.getItem("phone") || "919876543210"
@@ -54,17 +55,22 @@ export default function DeliveryHome() {
     }
   };
 
-  const handleUpdateStatus = async (orderId, newStatus) => {
+  const handleUpdateStatus = async (orderId, newStatus, otp = null) => {
+    const body = { orderId, status: newStatus }
+    if (otp) body.otp = otp
     const res = await fetch("/api/orders/status", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId, status: newStatus }),
+      body: JSON.stringify(body),
     });
     const data = await res.json();
     if (data.success) {
       setAcceptedOrders(
         acceptedOrders.map((o) => (o._id === orderId ? data.order : o))
       );
+      setOtps({...otps, [orderId]: ''});
+    } else {
+      alert(data.message || "Error updating status");
     }
   };
 
@@ -256,12 +262,22 @@ export default function DeliveryHome() {
                   </button>
                 )}
                 {order.status === "PICKED_UP" && (
-                  <button
-                    onClick={() => handleUpdateStatus(order._id, "DELIVERED")}
-                    className="w-full bg-green-600 text-white text-xl font-black py-5 rounded-2xl shadow-lg"
-                  >
-                    MARK AS DELIVERED
-                  </button>
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      placeholder="Enter 4-digit OTP from customer"
+                      value={otps[order._id] || ''}
+                      onChange={(e) => setOtps({...otps, [order._id]: e.target.value})}
+                      className="w-full p-3 border-2 border-gray-300 rounded-xl font-bold text-center text-xl"
+                      maxLength="4"
+                    />
+                    <button
+                      onClick={() => handleUpdateStatus(order._id, "DELIVERED", otps[order._id])}
+                      className="w-full bg-green-600 text-white text-xl font-black py-5 rounded-2xl shadow-lg"
+                    >
+                      VERIFY & DELIVER
+                    </button>
+                  </div>
                 )}
               </div>
             ))

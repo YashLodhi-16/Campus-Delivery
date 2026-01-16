@@ -95,6 +95,9 @@ export default function ReceiptPage() {
                         {order.status}
                     </span>
                 </p>
+                {order.status === "PICKED_UP" && (
+                  <p><strong>Delivery OTP:</strong> <span className="font-mono text-2xl font-black text-red-600">{order.otp}</span></p>
+                )}
                 <p><strong>Total:</strong> ₹{order.total}</p>
                 <div>
                   <strong>Items:</strong>

@@ -14,6 +14,7 @@ const OrderSchema = new mongoose.Schema({
   deliveryPartner: String,
   college: String,
   venue: String,
+  otp: String,
 }, { timestamps: true })
 
 export default mongoose.models.Order || mongoose.model("Order", OrderSchema)

@@ -13,7 +13,7 @@ export async function POST(request) {
 
         const body = await request.json();
         const { phone, subscription } = body;
-        console.log(phone, subscription)
+        // console.log(phone, subscription)
         const user = await UserSchema.findOneAndUpdate({ phone }, { subscription });
         if (!user) {
             return NextResponse.json({ success: false, message: 'user not found' }, { status: 404 })
